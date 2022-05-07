@@ -68,6 +68,20 @@ search_user1(Username) ->
     end,
     mnesia:transaction(F).
 
+find_user(Username) ->
+    F = fun() ->
+        mnesia:match_object({user, Username, '_'})
+    end,
+    {atomic, Results} = mnesia:transaction(F),
+    Results.
+
+find_all() ->
+    F = fun() ->
+        mnesia:match_object({user, '_', '_'})
+    end,
+    {atomic, Results} = mnesia:transaction(F),
+    Results.
+
 return_user(Username) ->
     mnesia:dirty_read({user, Username}).
 
